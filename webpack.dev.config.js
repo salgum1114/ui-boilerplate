@@ -22,8 +22,8 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'public'),
         publicPath: '/',
-        filename: '[name].[hash].js',
-        chunkFilename: '[id].[hash].js'
+        filename: '[name].js',
+        chunkFilename: '[id].[hash:8].js'
     },
 
     devServer: {
@@ -33,13 +33,13 @@ module.exports = {
         hot: true,
         publicPath: '/',
         historyApiFallback: true,
-        proxy: {
-            "**": {
-                target: "http://localhost:3000",
-                secure: false,
-                prependPath: false
-            }
-        }
+        // proxy: {
+        //     "**": {
+        //         target: "http://localhost:8080/api",
+        //         secure: false,
+        //         prependPath: false
+        //     }
+        // }
     },
 
     plugins: [
@@ -51,13 +51,14 @@ module.exports = {
             minChunks: function (module) {
                 // this assumes your vendor imports exist in the node_modules directory
                 return module.context && module.context.indexOf('node_modules') !== -1;
-            },
-            // 요 놈은 vendor에 대한 내용
-            fileName: '[name].[hash]'
+            }
         }),
         new HtmlWebpackPlugin({
             filename: 'index.html',
             template: __dirname + '/src/index.html'
+        }),
+        new webpack.EnvironmentPlugin({
+            NODE_ENV: 'development'
         }),
     ],
 
@@ -68,7 +69,7 @@ module.exports = {
                 loader: 'babel-loader',
                 include: path.resolve(__dirname, 'src'),
                 options: {
-                    presets: [['es2015', { modules: false }], 'stage-0', 'react'],
+                    presets: [['es2015', { loose: true, modules: false }], 'stage-0', 'react'],
                     plugins: ['react-hot-loader/babel', "syntax-dynamic-import"]
                 },
                 exclude: /node_modules/,

@@ -7,11 +7,15 @@ import { Link } from 'react-router-dom';
 class Header extends Component {
 
     static propTypes = {
-        isLoggedIn: PropTypes.bool.isRequired
+        isLoggedIn: PropTypes.bool.isRequired,
+        onLogout: PropTypes.func
     }
 
     static defaultProps = {
-        isLoggedIn: false
+        isLoggedIn: false,
+        onLogout: () => { 
+            console.error('logout function not defined');
+        }
     }
 
     constructor(props) {
@@ -19,6 +23,7 @@ class Header extends Component {
     }
 
     render() {
+
         const loginButton = (
             <Link to="/login" className="sidedrawer-toggle mui--visible-xs">
                 <i className="material-icons">vpn_key</i>
@@ -26,11 +31,11 @@ class Header extends Component {
         );
 
         const logoutButton = (
-            <Link to="/" className="sidedrawer-toggle mui--visible-xs">
+            <a className="sidedrawer-toggle mui--visible-xs" onClick={this.props.onLogout}>
                 <i className="material-icons">lock_open</i>
-            </Link>
+            </a>
         );
-
+        
         return (
             <header id="header">
                 <div className="mui-appbar mui--appbar-line-height">

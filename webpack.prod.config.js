@@ -16,8 +16,8 @@ module.exports = {
     output: {
         // entry에 존재하는 app.js, vendor.js로 뽑혀 나온다.
         path: path.resolve(__dirname, 'public'),
-        filename: '[name].[chunkhash].js',
-        chunkFilename: '[id].[chunkhash].js',
+        filename: '[name].[chunkhash:8].js',
+        chunkFilename: '[id].[chunkhash:8].js',
         publicPath: '/js/'
     },
 
@@ -47,7 +47,7 @@ module.exports = {
                 return module.context && module.context.indexOf('node_modules') !== -1;
             },
             // 요 놈은 vendor에 대한 내용
-            fileName: '[name].[chunkhash]'
+            fileName: '[name].[chunkhash:8]'
         }),
         // index.html 로 의존성 파일들 inject해주는 플러그인
         new HtmlWebpackPlugin({
@@ -55,7 +55,7 @@ module.exports = {
         })
     ],
 
-    devtool: 'cehap-module-source-map',
+    devtool: 'cheap-module-source-map',
 
     module: {
         rules: [

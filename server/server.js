@@ -26,16 +26,16 @@ app.use(bodyParser.json());
 
 app.use('/', express.static(path.resolve(__dirname, '../public')));
 
-app.get('/about', (req, res) => {
+app.get('/api/about', (req, res) => {
     return res.send('Can you hear me?');
 });
 
-app.get('/login', (req, res) => {
+app.get('/api/login', (req, res) => {
     return res.send('Can you hear me?');
 });
 
 import posts from './routes/posts';
-app.use('/posts', posts);
+app.use('/api/posts', posts);
 
 import counter from './routes/counter';
 app.use('/counter', counter());
