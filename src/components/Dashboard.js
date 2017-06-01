@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import Card from './Card';
+import Layout from '../containers/Layout';
 
 class Dashboard extends Component {
 
@@ -16,13 +17,13 @@ class Dashboard extends Component {
                     <div className="mdl-cell mdl-cell--3-col mdl-cell--6-col-phone mdl-cell--4-col-tablet"><Card /></div>
                     <div className="mdl-cell mdl-cell--3-col mdl-cell--6-col-phone mdl-cell--4-col-tablet"><Card /></div>
                     <div className="mdl-cell mdl-cell--3-col mdl-cell--6-col-phone mdl-cell--4-col-tablet"><Card /></div>
-                    {/*<div className="mdl-cell mdl-cell--3-col mdl-cell--6-col-phone mdl-cell--4-col-tablet"><Card /></div>
                     <div className="mdl-cell mdl-cell--3-col mdl-cell--6-col-phone mdl-cell--4-col-tablet"><Card /></div>
                     <div className="mdl-cell mdl-cell--3-col mdl-cell--6-col-phone mdl-cell--4-col-tablet"><Card /></div>
                     <div className="mdl-cell mdl-cell--3-col mdl-cell--6-col-phone mdl-cell--4-col-tablet"><Card /></div>
                     <div className="mdl-cell mdl-cell--3-col mdl-cell--6-col-phone mdl-cell--4-col-tablet"><Card /></div>
                     <div className="mdl-cell mdl-cell--3-col mdl-cell--6-col-phone mdl-cell--4-col-tablet"><Card /></div>
-                    <div className="mdl-cell mdl-cell--3-col mdl-cell--6-col-phone mdl-cell--4-col-tablet"><Card /></div>*/}
+                    <div className="mdl-cell mdl-cell--3-col mdl-cell--6-col-phone mdl-cell--4-col-tablet"><Card /></div>
+                    <div className="mdl-cell mdl-cell--3-col mdl-cell--6-col-phone mdl-cell--4-col-tablet"><Card /></div>
                     <div className="mdl-cell mdl-cell--3-col mdl-cell--6-col-phone mdl-cell--4-col-tablet"><Card /></div>
                 </div>
                 <div className="mdl-grid">

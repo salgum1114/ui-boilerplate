@@ -5,17 +5,19 @@ import update from 'react-addons-update';
 
 const initialState = {
     login: {
-        status: 'INIT'
+        statusMessage: 'INIT'
     },
     register: {
-        status: 'INIT',
+        statusMessage: 'INIT',
         error: -1
     },
+    validate: {
+        statusMessage: 'INIT'
+    },
     status: {
-        valid: false,
+        validate: false,
         isLoggedIn: false,
         currentUser: '',
-        response: {}
     }
 };
 
@@ -25,69 +27,79 @@ export default function authentication(state = initialState, action) {
         case types.AUTH_LOGIN:
             return update(state, {
                 login: {
-                    status: { $set: 'WAITING' }
+                    statusMessage: { $set: 'WAITING' }
                 }
             });
         case types.AUTH_LOGIN_SUCCESS:
             return update(state, {
                 login: {
-                    status: { $set: 'SUCCESS' }
+                    statusMessage: { $set: 'SUCCESS' }
+                },
+                validate: {
+                    statusMessage: { $set: 'SUCCESS' }
                 },
                 status: {
+                    validate: { $set: true },
                     isLoggedIn: { $set: true },
                     currentUser: { $set: action.username },
-                    response: { $set: action.response.data }
                 }
             });
         case types.AUTH_LOGIN_FAILURE:
             return update(state, {
                 login: {
-                    status: { $set: 'FAILURE' }
+                    statusMessage: { $set: 'FAILURE' }
                 }
             });
         case types.AUTH_REGISTER:
             return update(state, {
                 register: {
-                    status: { $set: 'WAITING' },
+                    statusMessage: { $set: 'WAITING' },
                     error: { $set: -1 }
                 }
             });
         case types.AUTH_REGISTER_SUCCESS:
             return update(state, {
                 register: {
-                    status: { $set: 'SUCCESS' }
+                    statusMessage: { $set: 'SUCCESS' }
                 }
             });
         case types.AUTH_REGISTER_FAILURE:
             return update(state, {
                 register: {
-                    status: { $set: 'FAILURE' },
+                    statusMessage: { $set: 'FAILURE' },
                     error: { $set: action.error }
                 }
             });
         case types.AUTH_GET_STATUS:
             return update(state, {
-                status: {
-                    isLoggedIn: { $set: true }
+                validate: {
+                    statusMessage: { $set: 'WAITING' }
                 }
             });
         case types.AUTH_GET_STATUS_SUCCESS:
             return update(state, {
+                validate: {
+                    statusMessage: { $set: 'SUCCESS' }
+                },
                 status: {
-                    valid: { $set: true },
-                    currentUser: { $set: action.username }
+                    validate: { $set: true },
+                    isLoggedIn: { $set: true }
                 }
             });
         case types.AUTH_GET_STATUS_FAILURE:
             return update(state, {
+                validate: {
+                    statusMessage: { $set: 'FAILURE' }
+                },
                 status: {
-                    valid: { $set: false },
+                    validate: { $set: false },
                     isLoggedIn: { $set: false }
                 }
             });
         case types.AUTH_LOGOUT:
             return update(state, {
                 status: {
+                    validate: { $set: false },
                     isLoggedIn: { $set: false },
                     currentUser: { $set: '' }
                 }

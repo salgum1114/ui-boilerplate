@@ -7,12 +7,10 @@ import { Link } from 'react-router-dom';
 class Header extends Component {
 
     static propTypes = {
-        isLoggedIn: PropTypes.bool.isRequired,
         onLogout: PropTypes.func
     }
 
     static defaultProps = {
-        isLoggedIn: false,
         onLogout: () => { 
             console.error('logout function not defined');
         }
@@ -23,13 +21,6 @@ class Header extends Component {
     }
 
     render() {
-
-        const loginButton = (
-            <Link to="/login" className="sidedrawer-toggle mui--visible-xs">
-                <i className="material-icons">vpn_key</i>
-            </Link>
-        );
-
         const logoutButton = (
             <a className="sidedrawer-toggle mui--visible-xs" onClick={this.props.onLogout}>
                 <i className="material-icons">lock_open</i>
@@ -48,7 +39,7 @@ class Header extends Component {
                         </a>
                         <span className="mui--text-title mui--hidden-xs-inline-block">ThingStar</span>
                         <span className="mui--pull-right">
-                            { this.props.isLoggedIn ? logoutButton : loginButton }
+                            {logoutButton}
                             <a className="sidedrawer-toggle mui--visible-xs">
                                 <i className="icon-github"></i>
                             </a>

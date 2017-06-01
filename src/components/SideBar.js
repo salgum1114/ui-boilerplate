@@ -55,7 +55,7 @@ class SideBar extends Component {
                 <div className="mui-divider"></div>
                 <ul>
                     <li>
-                        <Link to="/"><strong>Home</strong></Link>
+                        <Link to="/home"><strong>Home</strong></Link>
                         {/*<strong>Category 1</strong>
                         <ul>
                             <li><a href="#">Item 1</a></li>
@@ -74,15 +74,6 @@ class SideBar extends Component {
                     </li>
                     <li>
                         <Link to="/dashboard"><strong>Dashboard</strong></Link>
-                        {/*<strong>Category 3</strong>
-                        <ul>
-                            <li><a href="#">Item 1</a></li>
-                            <li><a href="#">Item 2</a></li>
-                            <li><a href="#">Item 3</a></li>
-                        </ul>*/}
-                    </li>
-                    <li>
-                        <Link to="/counter"><strong>Counter</strong></Link>
                         {/*<strong>Category 3</strong>
                         <ul>
                             <li><a href="#">Item 1</a></li>

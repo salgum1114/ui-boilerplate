@@ -2,27 +2,26 @@
 
 import React,{ Component } from 'react';
 import PropTypes from 'prop-types';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import createBrowserHistory from 'history/createBrowserHistory';
 
-import Header from '../components/Header';
-import SideBar from '../components/SideBar';
-import Footer from '../components/Footer';
 import asyncComponent from '../components/AsyncComponent';
 import About from '../components/About';
 import Dashboard from '../components/Dashboard';
 import NoMatch from '../components/NoMatch';
+import Home from '../components/Home';
 
-import Home from './Home';
-import Counter from './Counter';
+import Layout from './Layout';
 import Login from './Login';
 import Register from './Register';
-
-import * as actions from '../actions/authentication';
 
 // const About = asyncComponent(() => import('../components/About').then(module => module.default), {name: 'About'});
 // const Dashboard = asyncComponent(() => import('../components/Dashboard').then(module => module.default), {name: 'Dashboard'});
 // const NoMatch = asyncComponent(() => import('../components/NoMatch').then(module => module.default), {name: 'NoMatch'});
+import * as actions from '../actions/authentication';
+
+const history = createBrowserHistory();
 
 class App extends Component {
 
@@ -30,89 +29,49 @@ class App extends Component {
         super(props);
     }
 
-    componentDidMount() {
-        // get cookie by name
-        function getCookie(name) {
-            var value = "; " + document.cookie;
-            var parts = value.split("; " + name + "=");
-            if (parts.length == 2) return parts.pop().split(";").shift();
-        }
-
-        // get loginData from cookie
-        let loginData = getCookie('key');
-
-        // if loginData is undefined, do nothing
-        if(typeof loginData === "undefined") return;
-
-        // decode base64 & parse json
-        loginData = JSON.parse(atob(loginData));
-
-        // if not logged in, do nothing
-        if(!loginData.isLoggedIn) return;
-
-        // page refreshed & has a session in cookie,
-        // check whether this cookie is valid or not
-        this.props.getStatusRequest().then(
-            () => {
-                console.log(this.props.status);
-                // if session is not valid
-                if(!this.props.status.valid) {
-                    // logout the session
-                    loginData = {
-                        isLoggedIn: false,
-                        username: ''
-                    };
-
-                    document.cookie='key=' + btoa(JSON.stringify(loginData));
-
-                    // and notify
-                    let $toastContent = $('<span style="color: #FFB4BA">Your session is expired, please log in again</span>');
-                    Materialize.toast($toastContent, 4000);
-
-                }
-            }
-        );
+    componentWillMount() {
+        this.props.validateJwtToken().then((text) => {
+            // console.log(text);
+            this.props.refreshJwtRequest().then((text) => {
+                // console.log(text);
+            }).catch((error) => {
+                // console.log(error);
+                let $toastContent = $('<span style="color: #FFB4BA">Incorrect username or password</span>');
+                Materialize.toast($toastContent, 2000);
+            });
+        }).catch((error) => {
+            let $toastContent = $('<span style="color: #FFB4BA">Incorrect username or password</span>');
+            Materialize.toast($toastContent, 2000);
+            // console.log(error);
+        });
     }
 
-    handleLogout = () => {
-        this.props.logoutRequest().then(() => {
-            Materialize.toast('Good Bye!', 2000);
-
-            // EMPTIES THE SESSION
-            let loginData = {
-                isLoggedIn: false,
-                username: ''
-            };
-
-            document.cookie = 'key=' + btoa(JSON.stringify(loginData));
-        })
-    }
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     if(nextProps.validate.statusMessage === 'SUCCESS' ||
+    //     nextProps.validate.statusMessage === 'FAILURE')  {
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
+    // }
 
     render() {
-
+        let validate = this.props.status.validate;
         return (
             <Router>
-                {/*{isAuth ? undefined :*/}
                 <div id="container">
-                    <SideBar />
-                    <Header 
-                        isLoggedIn={this.props.status.isLoggedIn}
-                        onLogout={this.handleLogout}/>
-                    <div id="content-wrapper">
-                        <div className="mui--appbar-height"></div>
-                        <Switch>
-                            <Route exact path="/" component={Home}/>
+                    <Route exact path="/" render={() => {
+                        return !validate ? <Redirect to="/login" /> : <Redirect to="/home" />
+                    }}/>
+                    <Switch>
+                        <Route path="/login" component={Login} />
+                        <Layout history={history}>
+                            <Route path="/home" component={Home} />
                             <Route path="/about" component={About} />
                             <Route path="/dashboard" component={Dashboard} />
-                            <Route path="/counter" component={Counter} />
-                            <Route path="/login" component={Login} />
-                            <Route path="/register" component={Register} />
-                            <Route component={NoMatch} />
-                        </Switch>
-                    </div>
-                    <Footer />
+                        </Layout>
+                    </Switch>
                 </div>
-                {/*}*/}
             </Router>
         );
     }
@@ -120,17 +79,18 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        status: state.authentication.status
+        status: state.authentication.status,
+        validate: state.authentication.validate
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getStatusRequest: () => {
-            return dispatch(actions.getStatusRequest());
+        refreshJwtRequest: () => {
+            return dispatch(actions.refreshJwtRequest());
         },
-        logoutRequest: () => {
-            return dispatch(actions.logoutRequest());
+        validateJwtToken: () => {
+            return dispatch(actions.validateJwtToken(true));
         }
     };
 };

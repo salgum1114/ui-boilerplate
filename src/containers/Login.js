@@ -2,12 +2,10 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import createBrowserHistory from 'history/createBrowserHistory';
+import { Redirect } from 'react-router-dom';
 
 import Authentication from '../components/Authentication';
 import * as actions from '../actions/authentication';
-
-const history = createBrowserHistory();
 
 class Login extends Component {
 
@@ -16,24 +14,26 @@ class Login extends Component {
         
     }
 
+    // shouldComponentUpdate(nextProps, nextState) {
+    //     if(nextProps.validate.statusMessage === 'SUCCESS' ||
+    //     nextProps.validate.statusMessage === 'FAILURE') {
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
+    // }
+
     handleLogin = (id, pw) => {
         return this.props.loginRequest(id, pw).then(() => {
-            if(this.props.status === "SUCCESS") {
+            if(this.props.login.statusMessage === "SUCCESS") {
                 // create session data
                 let loginData = {
                     isLoggedIn: true,
                     username: id
                 };
 
-                let token = this.props.response.token;
-                let refreshToken = this.props.response.refreshToken;
-
-                document.cookie = 'key=' + btoa(JSON.stringify(loginData));
-                document.cookie = 'token=' + token;
-                document.cookie = 'refreshToken=' + refreshToken;
-
                 Materialize.toast('Welcome, ' + id + '!', 2000);
-                this.props.history.push('/');
+                this.props.history.push('/home');
                 return true;
             } else {
                 let $toastContent = $('<span style="color: #FFB4BA">Incorrect username or password</span>');
@@ -44,6 +44,11 @@ class Login extends Component {
     }
     
     render() {
+        let statusMessage = this.props.validate.statusMessage;
+        if(statusMessage !== 'FAILURE') {
+            return <Redirect to="/home" />
+        }
+
         return (
             <div>
                 <Authentication 
@@ -56,8 +61,8 @@ class Login extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        status: state.authentication.login.status,
-        response: state.authentication.status.response
+        login: state.authentication.login,
+        validate: state.authentication.validate
     };
 };
 
