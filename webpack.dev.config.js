@@ -1,17 +1,16 @@
-'use strict';
-
 const webpack = require('webpack');
+const merge = require('webpack-merge');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const baseConfig = require('./webpack.common.config.js');
 
 const devPort = 3001;
 
-module.exports = {
-    devtool: 'inline-source-map',
+module.exports = merge(baseConfig, {
+    devtool: 'eval-source-map',
 
     entry: {
-        app: [
+        bundle: [
             'react-hot-loader/patch',
             'webpack-dev-server/client?http://localhost:'+devPort,
             'webpack/hot/only-dev-server',
@@ -61,23 +60,4 @@ module.exports = {
             NODE_ENV: 'development'
         }),
     ],
-
-    module: {
-        rules: [
-            {
-                test: /\.js$/,
-                loader: 'babel-loader',
-                include: path.resolve(__dirname, 'src'),
-                options: {
-                    presets: [['es2015', { loose: true, modules: false }], 'stage-0', 'react'],
-                    plugins: ['react-hot-loader/babel', "syntax-dynamic-import"]
-                },
-                exclude: /node_modules/,
-            },
-            {
-                test: /\.(css|less)$/,
-                use: ['style-loader', 'css-loader', 'less-loader']
-            }
-        ]
-    }
-};
+});
