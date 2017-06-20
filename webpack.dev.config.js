@@ -14,15 +14,18 @@ module.exports = merge(baseConfig, {
             'react-hot-loader/patch',
             'webpack-dev-server/client?http://localhost:'+devPort,
             'webpack/hot/only-dev-server',
-            path.resolve(__dirname, 'src/index.js')
-        ]
+            // path.resolve(__dirname, 'src/semantic/index.js'),
+            // path.resolve(__dirname, 'src/blueprint/index.js'),
+            path.resolve(__dirname, 'src/ant-design/index.js'),
+            // path.resolve(__dirname, 'src/material/index.js'),
+        ],
     },
 
     output: {
         path: path.resolve(__dirname, 'public'),
         publicPath: '/',
         filename: '[name].js',
-        chunkFilename: '[id].[hash:8].js'
+        chunkFilename: '[id].[hash:8].js',
     },
 
     devServer: {
