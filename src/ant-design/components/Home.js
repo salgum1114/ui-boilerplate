@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { Table, Row } from 'antd';
+import { Table, Row, Menu, Dropdown, Icon, Checkbox } from 'antd';
 
 const columns = [{
     title: 'Name',
@@ -26,9 +26,42 @@ for (let i = 0; i < 100; i++) {
 }
 
 class Home extends Component {
+    state = {
+        visible: false,
+      };
+      handleMenuClick = (e) => {
+        if (e.key === '3') {
+          this.setState({ visible: false });
+        }
+      }
+      handleVisibleChange = (flag) => {
+        this.setState({ visible: flag });
+      }
     render() {
+        const menu = (
+            <Menu multiple onClick={this.handleMenuClick}>
+              <Menu.Item key="0" disabled>
+                <Checkbox>1st menu item</Checkbox>
+              </Menu.Item>
+              <Menu.Item key="1" disabled>
+                <Checkbox>2nd menu item</Checkbox>
+              </Menu.Item>
+              <Menu.Divider />
+              <Menu.Item key="3" disabled>
+                <Checkbox>3d menu item</Checkbox>
+            </Menu.Item>
+            </Menu>
+          );
         return (
             <Row>
+                <Dropdown overlay={menu} trigger={['click']}
+                    onVisibleChange={this.handleVisibleChange}
+                visible={this.state.visible}
+                >
+                <div className="ant-dropdown-link" href="#">
+                  Click me <Icon type="down" />
+                </div>
+              </Dropdown>
                 <Table columns={columns} dataSource={data} pagination={{ pageSize: 50 }} scroll={{ y: 240 }} />
             </Row>
         );

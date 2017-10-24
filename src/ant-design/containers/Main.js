@@ -19,6 +19,7 @@ class Main extends Component {
     }
 
     render() {
+        console.log(this.props.history);
         let matches;
         if (this.sider) {
             matches = this.sider.mql.matches;
