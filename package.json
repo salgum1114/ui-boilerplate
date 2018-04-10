@@ -14,7 +14,8 @@
     "start:server": "set NODE_ENV=development && nodemon --exec babel-node --presets es2015 ./server/server.js --watch ./server"
   },
   "modules": [
-    "CraneWirerope"
+    "CraneWirerope",
+    "SmartBEMS"
   ],
   "dependencies": {
     "antd": "^2.10.4",

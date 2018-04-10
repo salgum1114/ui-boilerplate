@@ -16,7 +16,9 @@ const appModule = new AppModule();
 appModule.dashboardWidgets();
 appModule.resourceDetails();
 appModule.resourceSummaryDetails();
-appModule.reducers();
+setTimeout(() => {
+    appModule.reducers();
+}, 0);
 
 const modules = EXTERNAL_MODULES.map(MODULE => {
     const waitForChunk = require('bundle-loader?lazy!./modules/' + MODULE + '/Module.js');
@@ -31,29 +33,30 @@ Promise.all(modules).then(res => {
         subModule.dashboardWidgets();
         subModule.resourceDetails();
         subModule.resourceSummaryDetails();
-        subModule.reducers();
+        setTimeout(() => {
+            subModule.reducers();
+        }, 0);
     });
 });
 
-console.log(appModule);
-
 const rootElement = document.getElementById('root');
 const render = (Component) => {
-    ReactDOM.render(
-        <AppContainer>
-            <Provider store={store(appModule.configurations)}>
-                <Component />
-            </Provider>
-        </AppContainer>
-        , rootElement,
-    );
+    setTimeout(() => {
+        ReactDOM.render(
+            <AppContainer>
+                <Provider store={store(appModule.configurations)}>
+                    <Component />
+                </Provider>
+            </AppContainer>
+            , rootElement,
+        );
+    }, 500);
 };
 
 render(App);
 
 if (module.hot) {
     module.hot.accept('./containers/App', () => {
-        store.replaceReducer(appModule.configurations.reducers);
         render(App);
     });
 }

@@ -88,7 +88,10 @@ class AppModule {
             configuration().then((values) => {
                 const newConfigurations = Object.assign({}, this.configurations[pluggableType], values);
                 Object.assign(this.configurations, { [pluggableType]: newConfigurations });
+                // Object.keys()
+                // this.configurations.reducers
             });
+            return;
         }
         const newConfigurations = Object.assign({}, this.configurations[pluggableType], configuration);
         Object.assign(this.configurations, { [pluggableType]: newConfigurations });

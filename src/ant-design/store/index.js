@@ -1,12 +1,12 @@
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 
-// import * as rootReducer from '../reducers';
+import * as rootReducer from '../reducers';
 
-export default (configurations) => {
-    const reducer = combineReducers(configurations.reducers);
+export default function (configurations) {
+    // console.log(rootReducer);
     console.log(configurations.reducers);
-    console.log(reducer);
+    const reducer = combineReducers(configurations.reducers);
     let store;
     const enhancer = applyMiddleware(thunkMiddleware);
     if (process.env.NODE_ENV === 'development'
@@ -18,4 +18,4 @@ export default (configurations) => {
         store = createStore(reducer, enhancer);
     }
     return store;
-};
+}
