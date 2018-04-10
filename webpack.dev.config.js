@@ -12,7 +12,7 @@ module.exports = merge(baseConfig, {
     entry: {
         bundle: [
             'react-hot-loader/patch',
-            'webpack-dev-server/client?http://localhost:'+devPort,
+            `webpack-dev-server/client?http://localhost:${devPort}`,
             'webpack/hot/only-dev-server',
             // path.resolve(__dirname, 'src/semantic/index.js'),
             // path.resolve(__dirname, 'src/blueprint/index.js'),
@@ -53,14 +53,17 @@ module.exports = merge(baseConfig, {
             minChunks: function (module) {
                 // this assumes your vendor imports exist in the node_modules directory
                 return module.context && module.context.indexOf('node_modules') !== -1;
-            }
+            },
         }),
         new HtmlWebpackPlugin({
             filename: 'index.html',
-            template: __dirname + '/src/index.html'
+            template: __dirname + '/src/index.html',
+        }),
+        new webpack.DefinePlugin({
+            EXTERNAL_MODULES: JSON.stringify(require('./package.json').modules),
         }),
         new webpack.EnvironmentPlugin({
-            NODE_ENV: 'development'
+            NODE_ENV: 'development',
         }),
     ],
 });

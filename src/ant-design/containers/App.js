@@ -8,6 +8,7 @@ import About from '../components/About';
 import Dashboard from '../components/Dashboard';
 import Home from '../components/Home';
 import Main from './Main';
+import Resources from '../components/Resources';
 
 const history = createBrowserHistory();
 
@@ -23,6 +24,7 @@ class App extends Component {
                             <Route path="/home" component={Home} />
                             <Route path="/about" component={About} />
                             <Route path="/dashboards" component={Dashboard} />
+                            <Route path="/resources" component={Resources} />
                         </Main>
                     </Switch>
                 </Layout>

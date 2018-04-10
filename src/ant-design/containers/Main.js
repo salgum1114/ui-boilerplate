@@ -19,7 +19,6 @@ class Main extends Component {
     }
 
     render() {
-        console.log(this.props.history);
         let matches;
         if (this.sider) {
             matches = this.sider.mql.matches;
@@ -28,12 +27,12 @@ class Main extends Component {
         return (
             <Layout>
                 <Layout.Sider
-                ref={(c) => { this.sider = c; }}
-                trigger={null}
-                breakpoint="sm"
-                collapsedWidth="0"
-                collapsed={this.state.collapsed}
-                onCollapse={(collapsed, type) => { this.setState({ collapsed }); }}
+                    ref={(c) => { this.sider = c; }}
+                    trigger={null}
+                    breakpoint="sm"
+                    collapsedWidth="0"
+                    collapsed={this.state.collapsed}
+                    onCollapse={(collapsed, type) => { this.setState({ collapsed }); }}
                 >
                     <div className="main-logo">
                         <Link to="/home">ThingStar</Link>
@@ -42,10 +41,10 @@ class Main extends Component {
                 </Layout.Sider>
                 <Layout>
                     <Title
-                    location={this.props.location}
-                    collapsed={this.state.collapsed}
-                    toggle={this.toggle}
-                    matches={matches}
+                        location={this.props.location}
+                        collapsed={this.state.collapsed}
+                        toggle={this.toggle}
+                        matches={matches}
                     />
                     <Layout.Content className="code-box-demo">
                         {this.props.children}

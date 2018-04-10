@@ -24,6 +24,12 @@ export default class MenuList extends Component {
                         <span className="nav-text">Dashboard</span>
                     </Link>
                 </Menu.Item>
+                <Menu.Item key="4">
+                    <Link to="/resources">
+                        <i className="material-icons margin-right-8 vertical-middle">computer</i>
+                        <span className="nav-text">Resources</span>
+                    </Link>
+                </Menu.Item>
             </Menu>
         );
     }
