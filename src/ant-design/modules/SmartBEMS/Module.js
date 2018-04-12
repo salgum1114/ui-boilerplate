@@ -16,11 +16,21 @@ export default class Module extends AppModule {
 
     resourceDetails() {
         const configuration = {
-            summary: {
-                component: Loadable({
-                    loader: () => import('./containers/resource/panel/SummaryPanel'),
-                    loading: () => null,
-                }),
+            bems: {
+                summary: {
+                    component: Loadable({
+                        loader: () => import('./containers/resource/panel/SummaryPanel'),
+                        loading: () => null,
+                    }),
+                    title: 'SmartBEMS Summary',
+                },
+                history: {
+                    component: Loadable({
+                        loader: () => import('./containers/resource/panel/SummaryPanel'),
+                        loading: () => null,
+                    }),
+                    title: 'History',
+                },
             },
         };
         this.register('resourceDetails', configuration);

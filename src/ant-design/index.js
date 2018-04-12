@@ -16,9 +16,7 @@ const appModule = new AppModule();
 appModule.dashboardWidgets();
 appModule.resourceDetails();
 appModule.resourceSummaryDetails();
-setTimeout(() => {
-    appModule.reducers();
-}, 0);
+appModule.reducers();
 
 const modules = EXTERNAL_MODULES.map(MODULE => {
     const waitForChunk = require('bundle-loader?lazy!./modules/' + MODULE + '/Module.js');
@@ -33,9 +31,7 @@ Promise.all(modules).then(res => {
         subModule.dashboardWidgets();
         subModule.resourceDetails();
         subModule.resourceSummaryDetails();
-        setTimeout(() => {
-            subModule.reducers();
-        }, 0);
+        subModule.reducers();
     });
 });
 
@@ -45,7 +41,7 @@ const render = (Component) => {
         ReactDOM.render(
             <AppContainer>
                 <Provider store={store(appModule.configurations)}>
-                    <Component />
+                    <Component configurations={appModule.configurations} />
                 </Provider>
             </AppContainer>
             , rootElement,

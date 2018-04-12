@@ -1,3 +1,4 @@
+import React from 'react';
 import Loadable from 'react-loadable';
 
 class AppModule {
@@ -18,27 +19,32 @@ class AppModule {
     }
 
     resourceDetails() {
-        this.configurations.resourceDetails.dashboard = {
-            component: Loadable({
-                loader: () => import('./containers/resource/panel/DashboardPanel'),
-                loading: () => null,
-                render(loaded, props) {
-                    const Component = loaded.default;
-                    return <Component {...props} />;
-                },
-            }),
-        };
-        this.configurations.resourceDetails.summary = {
-            component: Loadable({
-                loader: () => import('./containers/resource/panel/SummaryPanel'),
-                loading: () => null,
-            }),
-        };
-        this.configurations.resourceDetails.settings = {
-            component: Loadable({
-                loader: () => import('./containers/resource/panel/SettingPanel'),
-                loading: () => null,
-            }),
+        this.configurations.resourceDetails.default = {
+            dashboard: {
+                component: Loadable({
+                    loader: () => import('./containers/resource/panel/DashboardPanel'),
+                    loading: () => null,
+                    render(loaded, props) {
+                        const Component = loaded.default;
+                        return <Component {...props} />;
+                    },
+                }),
+                title: 'Dashboard',
+            },
+            summary: {
+                component: Loadable({
+                    loader: () => import('./containers/resource/panel/SummaryPanel'),
+                    loading: () => null,
+                }),
+                title: 'Summary',
+            },
+            settings: {
+                component: Loadable({
+                    loader: () => import('./containers/resource/panel/SettingPanel'),
+                    loading: () => null,
+                }),
+                title: 'Settings',
+            },
         };
     }
 
@@ -59,13 +65,10 @@ class AppModule {
                 order: 2,
             },
             group: {
+                key: 'group',
                 component: Loadable({
                     loader: () => import('./containers/resource/panel/summary/Group'),
                     loading: () => null,
-                    render(loaded, props) {
-                        const Component = loaded.default;
-                        return <Component {...props} />;
-                    },
                 }),
                 order: 3,
             },
@@ -88,8 +91,6 @@ class AppModule {
             configuration().then((values) => {
                 const newConfigurations = Object.assign({}, this.configurations[pluggableType], values);
                 Object.assign(this.configurations, { [pluggableType]: newConfigurations });
-                // Object.keys()
-                // this.configurations.reducers
             });
             return;
         }
