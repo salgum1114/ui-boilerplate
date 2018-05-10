@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Layout } from 'antd';
 import ResourceTree from './ResourceTree';
 import Panel from '../containers/resource/panel/Panel';
+import Scheduled from './Scheduled';
 
 class Resources extends Component {
     static contextTypes = {
@@ -13,6 +14,33 @@ class Resources extends Component {
         selectedResource: {
             type: 'group',
         },
+        count: 0,
+    }
+
+    componentWillMount() {
+        setTimeout(() => {
+            console.log('first');
+        }, 1000);
+        setImmediate(() => {
+            console.log('second');
+        }, 1000);
+    }
+
+    componentDidMount() {
+        // this.log();
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.scheduledId);
+    }
+
+    @Scheduled(1000)
+    log() {
+        this.setState({
+            count: this.state.count + 1,
+        }, () => {
+            console.log(this.state.count);
+        });
     }
 
     onSelect = (resource) => {

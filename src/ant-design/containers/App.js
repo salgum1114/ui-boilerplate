@@ -34,8 +34,8 @@ class App extends Component {
                 <Layout style={{ height: '100vh' }}>
                     <Switch>
                         <Main history={history}>
-                            <Route exact path="/" render={() => (<Redirect to="Home" />)} />
-                            <Route path="/home" component={Home} />
+                            <Route exact path="/" render={() => (<Redirect to="/about" />)} />
+                            {/* <Route path="/home" component={Home} /> */}
                             <Route path="/about" component={About} />
                             <Route path="/dashboards" component={Dashboard} />
                             <Route path="/resources" component={Resources} />

@@ -1,35 +1,51 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { notification } from 'antd';
 
-import NormalLoginForm from '../components/NormalLoginForm';
-
+import LoginForm from '../components/LoginForm';
 import * as actions from '../actions/authentication/authentication';
 
 class Login extends Component {
-    onClickLogin = (values) => {
-        console.log('Form values:', values);
-        const username = values.username;
-        const password = values.password;
-        const { login } = this.props;
-        login(username, password);
+
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps);
+    }
+
+    shouldComponentUpdate(nextProps) {
+        console.log(nextProps);
+        return true;
+    }
+
+    handleLogin = (values) => {
+        this.props.login(values).then((response) => {
+            notification.success({
+                message: this.props.statusMessage,
+            });
+        }).catch((error) => {
+            notification.error({
+                message: this.props.statusMessage,
+            });
+        });
     }
 
     render() {
-        const { isLoggedIn } = this.props;
         return (
-            <div>
-                <NormalLoginForm onClickLogin={this.onClickLogin} />
+            <div ref={(c) => { this.div = c; }}>
+                <LoginForm login={this.handleLogin} ref={(c) => { this.loginForm = c; }} />
+                {this.props.statusMessage}
             </div>
         );
     }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
+    statusMessage: state.authentication.statusMessage,
     isLoggedIn: state.authentication.isLoggedIn,
+    username: state.authentication.username,
 });
 
-const mapDispatchToProps = (dispatch) => bindActionCreators({
+const mapDispatchToProps = dispatch => bindActionCreators({
     login: actions.login,
 }, dispatch);
 

@@ -1,8 +1,6 @@
 import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 
-import * as rootReducer from '../reducers';
-
 export default function (configurations) {
     // console.log(rootReducer);
     console.log(configurations.reducers);

@@ -2,30 +2,34 @@ import * as AuthenticationTypes from './AuthenticationTypes';
 
 const loginRequest = () => {
     return {
-        type: AuthenticationTypes.API_LOGIN_REQUEST,
+        type: AuthenticationTypes.LOGIN_REQUEST,
     };
 };
 
-const loginSuccess = (username, password) => {
+const loginSuccess = (username) => {
     return {
-        type: AuthenticationTypes.API_LOGIN_SUCCESS,
-        payload: {
-            username,
-            password,
-        },
+        type: AuthenticationTypes.LOGIN_SUCCESS,
+        payload: username,
     };
 };
 
 const loginFailure = () => {
     return {
-        type: AuthenticationTypes.API_LOGIN_FAILURE,
+        type: AuthenticationTypes.LOGIN_FAILURE,
     };
 };
 
-const login = (username, password) => (dispatch) => {
+const login = ({ username, password }) => (dispatch) => {
     dispatch(loginRequest());
-    dispatch(loginSuccess(username, password));
-    dispatch(loginFailure());
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            if (username === 'admin' && password === 'admin') {
+                resolve(dispatch(loginSuccess(username)));
+            } else {
+                reject(dispatch(loginFailure()));
+            }
+        }, 500);
+    });
 };
 
 export {

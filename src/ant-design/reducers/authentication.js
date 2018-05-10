@@ -1,58 +1,37 @@
 import update from 'immutability-helper';
 
 import * as AuthenticationTypes from '../actions/authentication/AuthenticationTypes';
-import { TYPES, COMMAND, updateReducer } from '../actions/actionHelper';
 
 const initialState = {
-    statusMessage: 'INIT',
-    errorMessage: 'NONE',
+    statusMessage: 'NONE',
     isLoggedIn: false,
     username: '',
-    password: '',
 };
 
 export default function authentication(state = initialState, action) {
     switch (action.type) {
-        case AuthenticationTypes.API_LOGIN_REQUEST:
+        case AuthenticationTypes.LOGIN_REQUEST:
             return update(state, {
-                statusMessage: {
-                    $set: 'REQUEST',
-                },
-                isLoggedIn: {
-                    $set: false,
+                $set: {
+                    statusMessage: 'REQUEST',
+                    isLoggedIn: false,
+                    username: '',
                 },
             });
-        case AuthenticationTypes.API_LOGIN_SUCCESS:
+        case AuthenticationTypes.LOGIN_SUCCESS:
             return update(state, {
-                statusMessage: {
-                    $set: 'SUCCESS',
-                },
-                isLoggedIn: {
-                    $set: true,
-                },
-                username: {
-                    $set: action.payload.username,
-                },
-                password: {
-                    $set: action.payload.password,
+                $set: {
+                    statusMessage: 'SUCCESS',
+                    isLoggedIn: true,
+                    username: action.payload,
                 },
             });
-        case AuthenticationTypes.API_LOGIN_FAILURE:
+        case AuthenticationTypes.LOGIN_FAILURE:
             return update(state, {
-                statusMessage: {
-                    $set: 'FAILURE',
-                },
-                erorrMessage: {
-                    $set: 'ERROR',
-                },
-                isLoggedIn: {
-                    $set: false,
-                },
-                username: {
-                    $set: '',
-                },
-                password: {
-                    $set: '',
+                $set: {
+                    statusMessage: 'FAILURE',
+                    isLoggedIn: false,
+                    username: '',
                 },
             });
         default:
